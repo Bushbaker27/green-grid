@@ -1,6 +1,7 @@
 import pygame as pg
 import os
 import sys
+import re
 
 class Game:
     def __init__(self):
@@ -12,32 +13,7 @@ class Game:
         self.column_count = 0
         self.clock = None
         self.selected_cell = [None, '']
-        self.start_game()
-
-    def start_game(self):
-        """
-        Start the game
-        :return:
-        """
-        pg.init()
-        pg.display.set_caption('Green Grid')
-        # A light gray color
-        light_gray = (200, 200, 200)
-        # A gray color
-        gray = (100, 100, 100)
-
-        color_active = pg.Color('darkslategray')
-        color_passive = light_gray
-        base_font = pg.font.Font(None, 32)
-        black = 0, 0, 0
-        self.clock = pg.time.Clock()
-        self.screen = pg.display.set_mode(self.dimensions)
-        self.background = pg.image.load(os.path.join('./ResourcesLib/images', 'GrassBack.png'))
-        sidebar = pg.Rect(0, 0, 250, 1000)
-
-        # A list of all the input boxes, their rect is in the first element and the text is in
-        # the second.
-        veggie_trays = [
+        self.veggie_trays = [
             [pg.Rect(45, 100, 160, 32), 'Asparagus'],
             [pg.Rect(45, 150, 160, 32), 'Basil'],
             [pg.Rect(45, 200, 160, 32), 'Bean'],
@@ -54,8 +30,30 @@ class Game:
             [pg.Rect(45, 750, 160, 32), 'Strawberry'],
             [pg.Rect(45, 800, 160, 32), 'Tomato'],
             [pg.Rect(45, 850, 160, 32), 'Zucchini'],
-
         ]
+
+    def start_game(self):
+        """
+        Start the game
+        :return:
+        """
+        pg.init()
+        pg.display.set_caption('Green Grid')
+        # A light gray color
+        light_gray = (200, 200, 200)
+        # A gray color
+        gray = (100, 100, 100)
+
+        color_active = pg.Color('darkslategray')
+        color_passive = light_gray
+        base_font = pg.font.Font(None, 30)
+        black = 0, 0, 0
+        self.clock = pg.time.Clock()
+        self.screen = pg.display.set_mode(self.dimensions)
+        self.background = pg.image.load(os.path.join('./ResourcesLib/images', 'GrassBack.png'))
+        sidebar = pg.Rect(0, 0, 250, 1000)
+
+
         while True:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -63,7 +61,7 @@ class Game:
                     sys.exit()
                 if event.type == pg.MOUSEBUTTONDOWN:
                     # If the user clicked on the input_box rect.
-                    for pair in veggie_trays:
+                    for pair in self.veggie_trays:
                         box, text = pair
                         if box.collidepoint(event.pos):
                             # Toggle the active variable.
@@ -77,7 +75,11 @@ class Game:
                     elif event.key == pg.K_BACKSPACE:
                         self.selected_cell[1] = self.selected_cell[1][:-1]
                     else:
-                        self.selected_cell[1] += event.unicode
+                        # Only accept numbers that are smaller than 1000000000.
+                        text = event.unicode
+                        if (10 >= len(self.selected_cell[1]) >= 1 and re.match(r'^[0-9]$',text)) or \
+                                re.match(r'^[1-9]$', text):
+                            self.selected_cell[1] += event.unicode
 
             self.screen.fill(black)
             self.screen.blit(self.background, (0, 0))
@@ -91,12 +93,12 @@ class Game:
                 text_surface = base_font.render(self.selected_cell[1], True, (255, 255, 255))
                 self.screen.blit(text_surface, (self.selected_cell[0].x + 5, self.selected_cell[0].y + 5))
 
-            for box, text in veggie_trays:
+            for box, text in self.veggie_trays:
                 # Skip the selected box.
                 if box is None or box is self.selected_cell[0]:
                     continue
 
                 pg.draw.rect(self.screen, color_passive, box)
-                text_surface = base_font.render(text, True, (255, 255, 255))
+                text_surface = base_font.render(text, True, (0, 0, 0))
                 self.screen.blit(text_surface, (box.x + 5, box.y + 5))
             pg.display.flip()
