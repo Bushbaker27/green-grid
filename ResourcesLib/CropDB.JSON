@@ -1,5 +1,65 @@
 {
-  "asparagus": {
-    "basil": 0
+  "crops": {
+    "asparagus": {
+      "basil": 1,
+      "carrots": 1,
+      "onions": -1,
+      "potatoes": -1,
+      "tomatoes": 2
+    },
+    "basil": {
+      "asparagus": 1,
+      "beans": 1,
+      "beets": 1,
+      "cabbage": 1,
+      "potatoes": 1,
+      "tomatoes": 2
+    },
+    "beans": {
+      "beets": 1,
+      "carrots": 1,
+      "cabbage": 1,
+      "corn": 1,
+      "radishes": 1,
+      "onions": -1
+    },
+    "beets": {
+      "broccoli": 1,
+      "bush beans": 1,
+      "cabbage": 1,
+      "onions": 1,
+      "pole beans": -1
+    },
+    "broccoli": {
+      "basil": 1,
+      "beets": 1,
+      "bush beans": 1,
+      "carrots": 1,
+      "onions": 1,
+      "radishes": 1,
+      "asparagus": -1,
+      "climbing beans": -1,
+      "pumpkins": -1,
+      "strawberries": -1,
+      "corn": -1
+    },
+    "cabbage": {
+      "beets": 1,
+      "onions": 1,
+      "tomatoes": -1
+    },
+    "carrots": {
+      "beans": 1,
+      "lettuce": 1,
+      "onions": 1,
+      "tomatoes": 1
+    },
+    "corn": {
+      "pumpkins": 1,
+      "squash": 1,
+      "zucchini": 1,
+      "tomatoes": -1,
+      "climbing beans": 2
+    }
   }
 }
