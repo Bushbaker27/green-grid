@@ -2,9 +2,8 @@ import pygame
 import json
 import os
 
-
 class Plant(pygame.sprite.Sprite):
-    def __init__(self, name, row=1, col=-1):
+    def __init__(self, name, row=-1, col=-1):
         pygame.sprite.Sprite.__init__(self)
         #self.image = image
         #self.rect = self.image.get_rect()
@@ -23,8 +22,6 @@ class Plant(pygame.sprite.Sprite):
 
         #returns JSON object as dict
         data = json.load(f)
-
-        #for i in data[self.name]:
-
-
+        self.relation = sorted(data[self.name].items(), key=lambda x: x[1])
+        print(self.relation)
         f.close()
