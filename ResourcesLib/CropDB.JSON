@@ -60,6 +60,12 @@
       "zucchini": 1,
       "tomatoes": -1,
       "climbing beans": 2
+    },
+    "onions":{
+      "cabbage": 1,
+      "carrots": 1,
+      "tomatoes": 1,
+      "beans": -1
     }
   }
 }
