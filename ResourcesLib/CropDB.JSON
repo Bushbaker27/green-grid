@@ -1,5 +1,4 @@
 {
-  "crops": {
     "asparagus": {
       "basil": 1,
       "carrots": 1,
@@ -67,5 +66,4 @@
       "tomatoes": 1,
       "beans": -1
     }
-  }
 }

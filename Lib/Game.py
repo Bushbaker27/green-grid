@@ -1,5 +1,7 @@
 import pygame
 import sys
+from Lib import Grid
+
 
 class Game:
     def __init__(self):
@@ -13,6 +15,10 @@ class Game:
         :return:
         """
         pygame.init()
+
+        grid = Grid.Grids(10, 10, ["asparagus", "potatoes", "basil"])
+        grid.make_plants()
+
         black = 0, 0, 0
         self.screen = pygame.display.set_mode(self.dimensions)
         while True:
