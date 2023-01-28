@@ -1,10 +1,13 @@
-import pygame
+import pygame as pg
+import os
 import sys
 
 class Game:
     def __init__(self):
-        self.dimensions = (800, 600)
+        self.dimensions = (1200, 800)
         self.screen = None
+        self.grid = None
+        self.background = None
         self.start_game()
 
     def start_game(self):
@@ -12,13 +15,14 @@ class Game:
         Start the game
         :return:
         """
-        pygame.init()
+        pg.init()
         black = 0, 0, 0
-        self.screen = pygame.display.set_mode(self.dimensions)
+        self.screen = pg.display.set_mode(self.dimensions)
+        self.background = pg.image.load(os.path.join('./ResourcesLib/images', 'background.jpg'))
         while True:
-            self.screen.fill(black)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
                     sys.exit()
-                    break
-            pygame.display.flip()
+            self.screen.fill(black)
+            self.screen.blit(self.background, (0, 0))
+            pg.display.flip()
