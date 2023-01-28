@@ -38,22 +38,22 @@ class Game:
         # A list of all the input boxes, their rect is in the first element and the text is in
         # the second.
         veggie_trays = [
-            [pg.Rect(45, 100, 160, 32), ''],
-            [pg.Rect(45, 150, 160, 32), ''],
-            [pg.Rect(45, 200, 160, 32), ''],
-            [pg.Rect(45, 250, 160, 32), ''],
-            [pg.Rect(45, 300, 160, 32), ''],
-            [pg.Rect(45, 350, 160, 32), ''],
-            [pg.Rect(45, 400, 160, 32), ''],
-            [pg.Rect(45, 450, 160, 32), ''],
-            [pg.Rect(45, 500, 160, 32), ''],
-            [pg.Rect(45, 550, 160, 32), ''],
-            [pg.Rect(45, 600, 160, 32), ''],
-            [pg.Rect(45, 650, 160, 32), ''],
-            [pg.Rect(45, 700, 160, 32), ''],
-            [pg.Rect(45, 750, 160, 32), ''],
-            [pg.Rect(45, 800, 160, 32), ''],
-            [pg.Rect(45, 850, 160, 32), ''],
+            [pg.Rect(45, 100, 160, 32), 'Asparagus'],
+            [pg.Rect(45, 150, 160, 32), 'Basil'],
+            [pg.Rect(45, 200, 160, 32), 'Bean'],
+            [pg.Rect(45, 250, 160, 32), 'Beat'],
+            [pg.Rect(45, 300, 160, 32), 'Broccoli'],
+            [pg.Rect(45, 350, 160, 32), 'Cabbage'],
+            [pg.Rect(45, 400, 160, 32), 'Carrot'],
+            [pg.Rect(45, 450, 160, 32), 'Corn'],
+            [pg.Rect(45, 500, 160, 32), 'Onion'],
+            [pg.Rect(45, 550, 160, 32), 'Potato'],
+            [pg.Rect(45, 600, 160, 32), 'Pumpkin'],
+            [pg.Rect(45, 650, 160, 32), 'Radish'],
+            [pg.Rect(45, 700, 160, 32), 'Squash'],
+            [pg.Rect(45, 750, 160, 32), 'Strawberry'],
+            [pg.Rect(45, 800, 160, 32), 'Tomato'],
+            [pg.Rect(45, 850, 160, 32), 'Zucchini'],
 
         ]
         while True:
@@ -68,6 +68,7 @@ class Game:
                         if box.collidepoint(event.pos):
                             # Toggle the active variable.
                             self.selected_cell = pair
+                            self.selected_cell[1] = ''
 
 
                 if event.type == pg.KEYDOWN:
