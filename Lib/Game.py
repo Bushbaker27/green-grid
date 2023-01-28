@@ -30,6 +30,8 @@ class Game:
             [pg.Rect(45, 750, 160, 32), 'Strawberry'],
             [pg.Rect(45, 800, 160, 32), 'Tomato'],
             [pg.Rect(45, 850, 160, 32), 'Zucchini'],
+            [pg.Rect(15, 40, 100, 32), 'Length'],
+            [pg.Rect(145, 40, 100, 32), 'Width'],
         ]
 
     def start_game(self):
@@ -52,7 +54,6 @@ class Game:
         self.screen = pg.display.set_mode(self.dimensions)
         self.background = pg.image.load(os.path.join('./ResourcesLib/images', 'GrassBack.png'))
         sidebar = pg.Rect(0, 0, 250, 1000)
-
 
         while True:
             for event in pg.event.get():
@@ -85,6 +86,9 @@ class Game:
             self.screen.blit(self.background, (0, 0))
             # Drawing the sidebar
             pg.draw.rect(self.screen, gray, sidebar)
+
+            grid_splat = base_font.render('Grid Dimensions', True, (255, 255, 255))
+            self.screen.blit(grid_splat, (30, 10))
 
             # Render the current text.
             if self.selected_cell[0] is not None:
