@@ -1,5 +1,6 @@
 from Lib import Plant
 from Lib import Space
+from Lib import Legend
 import pygame as pg
 
 
@@ -9,6 +10,7 @@ class Grid:
         self.rows = rows
         self.cols = cols
         self.chosen_plants = chosen_plants
+        self.legend = Legend.Legend(chosen_plants)
         self.grid = []
         self.set_spaces()
         self.make_plants()
@@ -65,6 +67,7 @@ class Grid:
         best_row = 0
         best_score = -2
         for row in range(1, self.rows):
+            # If the row is already used, then skip it.
             if self.grid[row][0].item:
                 continue
             score = self.calculate_score(plant, self.get_neighbors((row, 0)))
