@@ -11,6 +11,7 @@ class Grid:
         self.plant_list = []
         self.grid = []
         self.set_spaces()
+        self.make_plants()
 
     def make_plants(self):
         #Creates plant object from strings given
