@@ -12,16 +12,17 @@ class Plant(pygame.sprite.Sprite):
 
         self.row = row
         self.col = col
-        self.name = name
-        self.relation = []
+        self.name = name.lower()
+        self.relation = dict()
+        self.relations()
 
     def relations(self):
-
         #opens JSON file
         f = open(os.path.join('./ResourcesLib', 'CropDB.JSON'))
 
         #returns JSON object as dict
         data = json.load(f)
-        self.relation = sorted(data[self.name].items(), key=lambda x: x[1])
+        for name, value in sorted(data[self.name].items(), key=lambda x: x[1], reverse=True):
+            self.relation[name] = value
         print(self.relation)
         f.close()

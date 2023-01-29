@@ -14,13 +14,9 @@ class Grid:
         self.make_plants()
 
     def make_plants(self):
-        #Creates plant object from strings given
-        for plant in self.chosen_plants:
-            new_plant = Plant.Plant(plant)
-            self.plant_list.append(new_plant)
-        # Creates relationships for the plants given
-        for plant in self.plant_list:
-            plant.relations()
+
+
+    def
 
     def set_spaces(self):
         """
