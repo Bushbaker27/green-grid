@@ -81,8 +81,12 @@ class Game:
                         # Bring up the grid.
                         self.row_count = int(self.veggie_trays[16][1])
                         self.column_count = int(self.veggie_trays[17][1])
-                        plant_selected = [(pair[2], pair[1]) for pair in self.veggie_trays[:16] if \
-                                re.match(r'^[1-9]$', pair[1])]
+                        plant_filter = [(pair[2], pair[1]) for pair in self.veggie_trays[:16] if
+                                        re.match(r'^[1-9][0-9]+$', pair[1])]
+                        plant_selected = dict()
+                        for plant, num in plant_filter:
+                            plant_selected[plant] = int(num)
+
                         self.grid = Grid.Grid(self.row_count, self.column_count, plant_selected)
 
 
