@@ -2,6 +2,10 @@ import pygame as pg
 import os
 import sys
 import re
+import json
+
+from Lib.SendSMS import SendSMS
+
 
 class Game:
     def __init__(self):
@@ -31,6 +35,7 @@ class Game:
             [pg.Rect(45, 800, 160, 32), 'Tomato'],
             [pg.Rect(45, 850, 160, 32), 'Zucchini'],
         ]
+        self.sendSMS = SendSMS()
 
     def start_game(self):
         """
@@ -55,6 +60,25 @@ class Game:
 
 
         while True:
+            f = open(os.path.dirname(__file__)+"/../ResourcesLib/TextRequest.JSON")
+            data = json.load(f)
+
+            if data["entry"] == "pause":
+                print("User request a pause")
+                self.sendSMS.SendTractorPause("Harvesting", "1,1")
+            elif data["entry"] == "begin":
+                print("User request a begin")
+                self.sendSMS.SendTractorBegin("Harvesting", "1,1")
+
+            dictionary = {
+                "entry": "no response"
+            }
+
+            json_object = json.dumps(dictionary, indent=4)
+
+            with open(os.path.dirname(__file__)+"/../ResourcesLib/TextRequest.JSON", "w") as outfile:
+                outfile.write(json_object)
+
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
