@@ -69,8 +69,8 @@ class Grid:
     def draw(self, screen):
         """
         Draws the grid to the screen.
-        :param screen:
-        :return:
+        :param screen: The main screen that is currently active on the application.
+        :return: None
         """
         # Make a rectangle as the grid.
         grid_rect = pg.Rect(490, 10, self.cols * 10 + 10, self.rows * 10 + 10)
