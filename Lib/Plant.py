@@ -40,21 +40,21 @@ class Plant(pg.sprite.Sprite):
         elif self.name == 'radish':
             return pg.Color('red')
         elif self.name == 'squash':
-            return pg.Color('yellow')
+            return pg.Color((47, 0, 122))
         elif self.name == 'strawberry':
             return pg.Color('pink')
         elif self.name == 'zucchini':
-            return pg.Color('green')
+            return pg.Color((117, 74, 0))
         elif self.name == 'corn':
             return pg.Color('yellow')
         elif self.name == 'pumpkin':
             return pg.Color('orange')
         elif self.name == 'basil':
-            # brackish green
-            return pg.Color((19, 28, 9))
+            # magenta
+            return pg.Color((204, 27, 204))
         elif self.name == 'carrot':
             # Burnt orange
-            return pg.Color((128, 68, 0))
+            return pg.Color((79, 9, 30))
         elif self.name == 'onion':
             # tan
             return pg.Color((232, 193, 162))
@@ -62,8 +62,8 @@ class Plant(pg.sprite.Sprite):
             # light brown
             return pg.Color((181, 101, 29))
         elif self.name == 'tomato':
-            # tomato red
-            return pg.Color((255, 99, 71))
+            # lime
+            return pg.Color((27, 204, 89))
 
     def get_score(self, other):
         """
@@ -72,7 +72,7 @@ class Plant(pg.sprite.Sprite):
         :return: The score of the plant.
         """
         if other is None:
-            return 0
+            return 1
         if other.name == self.name:
-            return -0.5
+            return 0
         return self.relation[other.name]

@@ -12,8 +12,8 @@
     "pumpkin": 0,
     "basil": 1,
     "carrot": 1,
-    "onion": -1,
-    "potato": -1,
+    "onion": -4,
+    "potato": -4,
     "tomato": 2
   },
   "basil": {
@@ -48,7 +48,7 @@
     "cabbage": 1,
     "corn": 1,
     "radish": 1,
-    "onion": -1
+    "onion": -4
   },
   "beet": {
     "asparagus": 0,
@@ -79,10 +79,10 @@
     "carrot": 1,
     "onion": 1,
     "radish": 1,
-    "asparagus": -1,
-    "pumpkin": -1,
-    "strawberry": -1,
-    "corn": -1
+    "asparagus": -4,
+    "pumpkin": -4,
+    "strawberry": -4,
+    "corn": -4
   },
   "cabbage": {
     "asparagus": 0,
@@ -99,7 +99,7 @@
     "zucchini": 0,
     "beet": 1,
     "onion": 1,
-    "tomato": -1
+    "tomato": -4
   },
   "carrot": {
     "asparagus": 0,
@@ -133,7 +133,7 @@
     "pumpkin": 1,
     "squash": 1,
     "zucchini": 1,
-    "tomato": -1
+    "tomato": -4
   },
   "onion":{
     "asparagus": 0,
@@ -150,7 +150,7 @@
     "cabbage": 1,
     "carrot": 1,
     "tomato": 1,
-    "bean": -1
+    "bean": -4
   },
   "potato": {
     "beet": 0,
@@ -162,12 +162,12 @@
     "corn": 1,
     "onion": 1,
     "radish": 1,
-    "asparagus": -1,
-    "broccoli": -1,
-    "carrot": -1,
-    "strawberry": -1,
-    "tomato": -1,
-    "cabbage": -1
+    "asparagus": -4,
+    "broccoli": -4,
+    "carrot": -4,
+    "strawberry": -4,
+    "tomato": -4,
+    "cabbage": -4
   },
   "pumpkin": {
     "asparagus": 0,
@@ -184,7 +184,7 @@
     "bean": 1,
     "corn": 1,
     "squash": 1,
-    "potato": -1
+    "potato": -4
   },
   "radish": {
     "asparagus": 0,
@@ -218,7 +218,7 @@
     "corn": 1,
     "radish": 1,
     "strawberry": 1,
-    "potato": -1
+    "potato": -4
   },
   "strawberry": {
     "asparagus": 0,
@@ -233,9 +233,9 @@
     "zucchini": 0,
     "onion": 1,
     "squash": 1,
-    "cabbage": -1,
-    "potato": -1,
-    "tomato": -1
+    "cabbage": -4,
+    "potato": -4,
+    "tomato": -4
   },
   "tomato": {
     "bean": 0,
@@ -250,8 +250,8 @@
     "asparagus": 1,
     "carrot": 1,
     "onion": 1,
-    "corn": -1,
-    "potato": -1,
+    "corn": -4,
+    "potato": -4,
     "basil": 2
   },
   "zucchini": {
@@ -268,7 +268,7 @@
     "bean": 1,
     "corn": 1,
     "radish": 1,
-    "potato": -1,
-    "pumpkin": -1
+    "potato": -4,
+    "pumpkin": -4
   }
 }

@@ -57,6 +57,10 @@ class Grid:
         for neighbor in neighbors:
             if neighbor is not None:
                 score += plant.get_score(neighbor.item)
+                if neighbor.item is not None:
+                    score += neighbor.item.get_score(plant)
+                else:
+                    score += 1
         return score
 
     def select_plant(self, simple=False):
@@ -78,12 +82,14 @@ class Grid:
 
         # If this was not a simple planting, then we must do some investigation.
         best_row = 0
-        best_score = -2
+        # Set best_score to the lowest possible score.
+        best_score = float('-inf')
+
         for row in range(1, self.rows):
             # If the row is already used, then skip it.
             if self.grid[row][0].item:
                 continue
-            score = self.calculate_score(plant, self.get_neighbors((row, 0)))
+            score = self.calculate_score(plant,  self.get_neighbors((row, 0)))
             if score > best_score:
                 best_score = score
                 best_row = row
