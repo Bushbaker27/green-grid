@@ -9,6 +9,7 @@ class Space:
         self.item = None
         self.color = pg.Color('green')
         self.location = location
+        self.scale = 10
 
     def draw(self, screen):
         """
@@ -17,8 +18,9 @@ class Space:
         :return:
         """
         # The rectangle of the space.
-        space_rect = pg.Rect(495 + self.location[1] * 10, 10 + self.location[0] * 10, 10, 10)
+        space_rect = pg.Rect(495 + self.location[1] * self.scale, 15 + self.location[0] * self.scale, 10, 10)
         pg.draw.rect(screen, self.color, space_rect)
+        pg.draw.rect(screen, pg.Color('black'), space_rect, 1)
 
     def get_item(self):
         """

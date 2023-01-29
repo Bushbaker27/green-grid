@@ -73,7 +73,7 @@ class Grid:
         :return:
         """
         # Make a rectangle as the grid.
-        grid_rect = pg.Rect(495, 10, self.rows * 10 +5, self.cols * 10 + 5)
+        grid_rect = pg.Rect(490, 10, self.cols * 10 + 10, self.rows * 10 + 10)
         pg.draw.rect(screen, pg.Color('brown'), grid_rect)
         for row in self.grid:
             for space in row:
