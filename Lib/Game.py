@@ -5,7 +5,7 @@ import re
 
 class Game:
     def __init__(self):
-        self.dimensions = (1500, 1000)
+        self.dimensions = (400, 400)
         self.screen = None
         self.grid = None
         self.background = None
@@ -45,15 +45,16 @@ class Game:
         light_gray = (200, 200, 200)
         # A gray color
         gray = (100, 100, 100)
-
+        info = pg.display.Info()
+        print(info)
         color_active = pg.Color('darkslategray')
         color_passive = light_gray
         base_font = pg.font.Font(None, 30)
         black = 0, 0, 0
         self.clock = pg.time.Clock()
-        self.screen = pg.display.set_mode(self.dimensions)
+        self.screen = pg.display.set_mode(self.dimensions, pg.RESIZABLE)
         self.background = pg.image.load(os.path.join('./ResourcesLib/images', 'GrassBack.png'))
-        sidebar = pg.Rect(0, 0, 250, 1000)
+        sidebar = pg.Rect(0, 0, 250, 864)
 
         while True:
             for event in pg.event.get():
