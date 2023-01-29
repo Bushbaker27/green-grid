@@ -7,7 +7,7 @@ class Space:
     """
     def __init__(self, location):
         self.item = None
-        self.color = pg.Color('green')
+        self.color = pg.Color('gray')
         self.location = location
         self.scale = 10
 
@@ -29,3 +29,12 @@ class Space:
         """
         return self.item
 
+    def set_item(self, item):
+        """
+        Sets the item in the space. Will also change the color of the space depending
+        on what crop is being planted.
+        :param item: The item to be placed in the space.
+        :return:
+        """
+        self.item = item
+        self.color = item.color
