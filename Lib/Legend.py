@@ -4,7 +4,7 @@ from Lib import Plant
 class Legend:
     def __init__(self, legend):
         self.legend = legend
-        self.position = (280, 50)
+        self.position = (280, 10)
 
     def draw(self, screen):
         """
