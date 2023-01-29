@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 class Game:
     def __init__(self):
-        self.dimensions = (1500, 1000)
+        self.dimensions = (1000, 800)
         self.grid = None
         self.screen = None
         self.grid = None
@@ -19,7 +19,10 @@ class Game:
         self.row_count = 0
         self.column_count = 0
         self.clock = None
+        self.splash_dimensions = (700, 500)
         self.selected_cell = [None, '']
+        self.splash_dimensions = (800, 600)
+        self.splash = None
         self.veggie_trays = [
             [pg.Rect(45, 100, 160, 32), 'Asparagus', 'Asparagus'],
             [pg.Rect(45, 150, 160, 32), 'Basil', 'Basil'],
@@ -61,10 +64,17 @@ class Game:
         color_passive = light_gray
         base_font = pg.font.Font(None, 30)
         black = 0, 0, 0
+
+        self.screen = pg.display.set_mode(self.splash_dimensions, pg.RESIZABLE)
+        self.background = pg.image.load(os.path.join('./ResourcesLib/images', 'GGLogo.png'))
+        self.screen.blit(self.background, (0, 0))
+        pg.display.flip()
+        pg.time.wait(2000)
+
         self.clock = pg.time.Clock()
         self.screen = pg.display.set_mode(self.dimensions, pg.RESIZABLE)
         self.background = pg.image.load(os.path.join('./ResourcesLib/images', 'GrassBack.png'))
-
+        self.screen = pg.display.set_mode(self.dimensions, pg.RESIZABLE)
         # The sidebar
         sidebar = pg.Rect(0, 0, 250, 1000)
         # The start button.
