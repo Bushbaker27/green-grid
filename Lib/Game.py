@@ -5,6 +5,7 @@ import re
 import json
 
 from Lib.SendSMS import SendSMS
+from Lib import Grid
 
 
 class Game:
@@ -77,7 +78,7 @@ class Game:
                 if event.type == pg.MOUSEBUTTONDOWN:
                     # If the user clicked on the input_box rect.
                     for pair in self.veggie_trays:
-                        box, text = pair
+                        box, text, _ = pair
                         if box.collidepoint(event.pos):
                             # Toggle the active variable.
                             self.selected_cell = pair
