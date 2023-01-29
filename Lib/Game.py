@@ -37,8 +37,8 @@ class Game:
             [pg.Rect(45, 750, 160, 32), 'Strawberry', 'Strawberry'],
             [pg.Rect(45, 800, 160, 32), 'Tomato', 'Tomato'],
             [pg.Rect(45, 850, 160, 32), 'Zucchini', 'Zucchini'],
-            [pg.Rect(15, 40, 100, 32), 'Length', 'Length'],
-            [pg.Rect(145, 40, 100, 32), 'Width', 'Width'],
+            [pg.Rect(10, 10, 100, 32), 'Length', 'Length'],
+            [pg.Rect(140, 10, 100, 32), 'Width', 'Width'],
         ]
         self.sendSMS = SendSMS()
 
@@ -73,6 +73,8 @@ class Game:
         restart_btn_color = pg.Color((204, 121, 27))
         restart_text = 'Restart'
 
+        # The amount of rows left to use
+        rows_left = 'Rows Left: '
 
         while True:
             self.CheckForTextMessages()
@@ -91,7 +93,7 @@ class Game:
 
                     # If the user clicked on the input_box rect.
                     for pair in self.veggie_trays:
-                        box, text, _ = pair
+                        box, text, base = pair
                         if box.collidepoint(event.pos):
                             # Toggle the active variable.
                             self.selected_cell = pair
@@ -114,14 +116,14 @@ class Game:
                         count = 0
                         for value in plant_selected.values():
                             count += value
+                        rows_left = 'Rows Left: ' + str(self.row_count - count)
                         if count > self.row_count:
                             if set_time:
                                 end_time = datetime.now() + timedelta(seconds=4)
-                                start_time = False
+                                set_time = False
                                 splat = 'Too many plants for the grid!'
                         elif count != 0:
                             self.grid = Grid.Grid(self.row_count, self.column_count, plant_selected)
-
 
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_BACKSPACE:
@@ -145,12 +147,12 @@ class Game:
                 text_surface = base_font.render(self.selected_cell[1], True, (255, 255, 255))
                 self.screen.blit(text_surface, (self.selected_cell[0].x + 5, self.selected_cell[0].y + 5))
 
-            for box, text, _ in self.veggie_trays:
+            for box, text, base in self.veggie_trays:
                 # Skip the selected box.
                 if box is None or box is self.selected_cell[0]:
                     continue
                 if text == '':
-                    text = _
+                    text = base
                 pg.draw.rect(self.screen, color_passive, box)
                 text_surface = base_font.render(text, True, (0, 0, 0))
                 self.screen.blit(text_surface, (box.x + 5, box.y + 5))
@@ -168,6 +170,9 @@ class Game:
             else:
                 set_time = True
 
+            # Render the rows left text
+            rows_left_splat = base_font.render(rows_left, True, (0, 0, 0))
+            self.screen.blit(rows_left_splat, (30, 50))
 
             if self.grid is not None:
                 self.grid.draw(self.screen)
