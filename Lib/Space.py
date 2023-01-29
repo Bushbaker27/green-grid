@@ -42,5 +42,6 @@ class Space:
         self.color = item.color
 
     def show_tractor(self, screen):
-        space_rect = pg.Rect(495 + self.location[1] * self.scale, 15 + self.location[0] * self.scale, 10, 10)
+        space_rect = pg.Rect(495 + self.location[1] * self.scale_row, 15 + self.location[0] *
+                             self.scale_col, self.scale_row, self.scale_col)
         pg.draw.rect(screen, pg.Color('black'), space_rect)
