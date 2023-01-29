@@ -58,26 +58,8 @@ class Game:
         self.background = pg.image.load(os.path.join('./ResourcesLib/images', 'GrassBack.png'))
         sidebar = pg.Rect(0, 0, 250, 1000)
 
-
         while True:
-            f = open(os.path.dirname(__file__)+"/../ResourcesLib/TextRequest.JSON")
-            data = json.load(f)
-
-            if data["entry"] == "pause":
-                print("User request a pause")
-                self.sendSMS.SendTractorPause("Harvesting", "1,1")
-            elif data["entry"] == "begin":
-                print("User request a begin")
-                self.sendSMS.SendTractorBegin("Harvesting", "1,1")
-
-            dictionary = {
-                "entry": "no response"
-            }
-
-            json_object = json.dumps(dictionary, indent=4)
-
-            with open(os.path.dirname(__file__)+"/../ResourcesLib/TextRequest.JSON", "w") as outfile:
-                outfile.write(json_object)
+            self.CheckForTextMessages()
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -92,7 +74,6 @@ class Game:
                             self.selected_cell = pair
                             self.selected_cell[1] = ''
 
-
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_RETURN:
                         self.selected_cell = [None, '']
@@ -101,7 +82,7 @@ class Game:
                     else:
                         # Only accept numbers that are smaller than 1000000000.
                         text = event.unicode
-                        if (10 >= len(self.selected_cell[1]) >= 1 and re.match(r'^[0-9]$',text)) or \
+                        if (10 >= len(self.selected_cell[1]) >= 1 and re.match(r'^[0-9]$', text)) or \
                                 re.match(r'^[1-9]$', text):
                             self.selected_cell[1] += event.unicode
 
@@ -126,3 +107,23 @@ class Game:
                 text_surface = base_font.render(text, True, (0, 0, 0))
                 self.screen.blit(text_surface, (box.x + 5, box.y + 5))
             pg.display.flip()
+
+    def CheckForTextMessages(self):
+        textRequestFile = open(os.path.dirname(__file__) + "/../ResourcesLib/TextRequest.JSON")
+        textRequestData = json.load(textRequestFile)
+
+        if textRequestData["entry"] == "pause":
+            print("User request a pause")
+            self.sendSMS.SendTractorPause("Harvesting", "1,1")
+        elif textRequestData["entry"] == "begin":
+            print("User request a begin")
+            self.sendSMS.SendTractorBegin("Harvesting", "1,1")
+
+        resetTextRequestData = {
+            "entry": "no response"
+        }
+
+        replaceTextRequestFile = json.dumps(resetTextRequestData, indent=4)
+
+        with open(os.path.dirname(__file__) + "/../ResourcesLib/TextRequest.JSON", "w") as outfile:
+            outfile.write(replaceTextRequestFile)

@@ -26,14 +26,14 @@ def sms_reply():
     print(body)
     sendSMS = SendSMS()
 
-    dictionary = {
+    textRequest = {
         "entry": body
     }
 
-    json_object = json.dumps(dictionary, indent=4)
+    textRequestFile = json.dumps(textRequest, indent=4)
 
     with open(os.path.dirname(__file__)+"/../ResourcesLib/TextRequest.JSON", "w") as outfile:
-        outfile.write(json_object)
+        outfile.write(textRequestFile)
 
     if body == "pause" or body == "begin":
         return body

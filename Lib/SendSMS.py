@@ -3,18 +3,18 @@ import json
 import os
 
 try:
-    f = open(os.path.dirname(__file__)+"/../ResourcesLib/TwilioCreds.JSON")
-    data = json.load(f)
+    twilioCredsFile = open(os.path.dirname(__file__)+"/../ResourcesLib/TwilioCreds.JSON")
+    twilioCreds = json.load(twilioCredsFile)
 except:
     raise Exception("Must include your Twilio Credentials in a TwilioCreds.JSON file within your Resource Library")
 
 
 class SendSMS:
-    account_sid = data["TWILIO_ACCOUNT_SID"]
-    auth_token = data["TWILIO_AUTH_TOKEN"]
+    account_sid = twilioCreds["TWILIO_ACCOUNT_SID"]
+    auth_token = twilioCreds["TWILIO_AUTH_TOKEN"]
     client = Client(account_sid, auth_token)
-    twilio_phone_number = data["TWILIO_PHONE_NUMBER"]
-    recipient_phone_number = data["RECIPIENT_PHONE_NUMBER"]
+    twilio_phone_number = twilioCreds["TWILIO_PHONE_NUMBER"]
+    recipient_phone_number = twilioCreds["RECIPIENT_PHONE_NUMBER"]
 
     def SendTractorBegin(self, process, loc):
         self.client.messages.create(
