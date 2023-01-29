@@ -6,6 +6,7 @@ import json
 
 from Lib.SendSMS import SendSMS
 from Lib import Grid
+from datetime import datetime, timedelta
 
 
 class Game:
@@ -52,6 +53,9 @@ class Game:
         light_gray = (200, 200, 200)
         # A gray color
         gray = (100, 100, 100)
+        splat = ''
+        set_time = True
+        end_time = datetime.now()
 
         color_active = pg.Color('darkslategray')
         color_passive = light_gray
@@ -64,9 +68,10 @@ class Game:
         # The sidebar
         sidebar = pg.Rect(0, 0, 250, 1000)
         # The start button.
-        start_button = pg.Rect(30, 900, 200, 50)
-        start_button_color = pg.Color('palegreen')
-        start_text = 'Start'
+        restart_btn = pg.Rect(30, 900, 200, 50)
+        # Pale orange color
+        restart_btn_color = pg.Color((204, 121, 27))
+        restart_text = 'Restart'
 
 
         while True:
@@ -77,6 +82,13 @@ class Game:
                     pg.quit()
                     sys.exit()
                 if event.type == pg.MOUSEBUTTONDOWN:
+                    # If the user clicked on the restart button.
+                    if restart_btn.collidepoint(event.pos):
+                        # Reset the grid.
+                        for pair in self.veggie_trays:
+                            pair[1] = pair[2]
+                        self.grid = None
+
                     # If the user clicked on the input_box rect.
                     for pair in self.veggie_trays:
                         box, text, _ = pair
@@ -84,33 +96,31 @@ class Game:
                             # Toggle the active variable.
                             self.selected_cell = pair
                             self.selected_cell[1] = ''
-                    if start_button.collidepoint(event.pos):
-                        # Bring up the grid.
-                        if self.veggie_trays[16][1] == "Length" or self.veggie_trays[17][1] == "Width" or self.veggie_trays[16][1] == "" or self.veggie_trays[17][1] == "":
-                            d_font = pg.font.Font(None, 15)
-                            blank_splat = d_font.render('Please input an integer for Width/Length', True, (255,255,255))
-                            self.screen.blit(blank_splat,(15,80))
-                            pg.display.flip()
-                            pg.time.wait(2000)
-                        else:
-                            self.row_count = int(self.veggie_trays[16][1])
-                            self.column_count = int(self.veggie_trays[17][1])
-                            plant_filter = [(pair[2], pair[1]) for pair in self.veggie_trays[:16] if
-                                            re.match(r'^[1-9]{0,1}[0-9]+$', pair[1])]
-                            plant_selected = dict()
-                            for plant, num in plant_filter:
-                                plant_selected[plant] = int(num)
-                            count = 0
-                            for value in plant_selected.values():
-                                count += value
-                            if count > self.row_count:
-                                f_font = pg.font.Font(None, 15)
-                                b_splat = f_font.render('Too many plants!', True, (255,255,255))
-                                self.screen.blit(b_splat,(15,80))
-                                pg.display.flip()
-                                pg.time.wait(2000)
-                            else:
-                                self.grid = Grid.Grid(self.row_count, self.column_count, plant_selected)
+                    if self.veggie_trays[16][1] == "Length" or self.veggie_trays[17][1] == "Width" or self.veggie_trays[16][1] == "" or self.veggie_trays[17][1] == "":
+                        d_font = pg.font.Font(None, 15)
+                        if set_time:
+                            end_time = datetime.now() + timedelta(seconds=4)
+                            set_time = False
+                            splat = 'Please enter a length and width'
+                        blank_splat = d_font.render('Please input an integer for Width/Length', True, (255,255,255))
+                    else:
+                        self.row_count = int(self.veggie_trays[16][1])
+                        self.column_count = int(self.veggie_trays[17][1])
+                        plant_filter = [(pair[2], pair[1]) for pair in self.veggie_trays[:16] if
+                                        re.match(r'^[1-9]{0,1}[0-9]+$', pair[1])]
+                        plant_selected = dict()
+                        for plant, num in plant_filter:
+                            plant_selected[plant] = int(num)
+                        count = 0
+                        for value in plant_selected.values():
+                            count += value
+                        if count > self.row_count:
+                            if set_time:
+                                end_time = datetime.now() + timedelta(seconds=4)
+                                start_time = False
+                                splat = 'Too many plants for the grid!'
+                        elif count != 0:
+                            self.grid = Grid.Grid(self.row_count, self.column_count, plant_selected)
 
 
                 if event.type == pg.KEYDOWN:
@@ -129,7 +139,7 @@ class Game:
             pg.draw.rect(self.screen, gray, sidebar)
 
             # Render the current text.
-            if self.selected_cell[0] is not None and self.selected_cell[0] is not start_button:
+            if self.selected_cell[0] is not None and self.selected_cell[0] is not restart_btn:
                 pg.draw.rect(self.screen, color_active, self.selected_cell[0])
                 # Blit the text.
                 text_surface = base_font.render(self.selected_cell[1], True, (255, 255, 255))
@@ -139,15 +149,25 @@ class Game:
                 # Skip the selected box.
                 if box is None or box is self.selected_cell[0]:
                     continue
-
+                if text == '':
+                    text = _
                 pg.draw.rect(self.screen, color_passive, box)
                 text_surface = base_font.render(text, True, (0, 0, 0))
                 self.screen.blit(text_surface, (box.x + 5, box.y + 5))
 
             # Green start button
-            pg.draw.rect(self.screen, start_button_color, start_button)
-            start_text_surface = base_font.render(start_text, True, (0, 0, 0))
-            self.screen.blit(start_text_surface, (start_button.x + 75, start_button.y + 15))
+            pg.draw.rect(self.screen, restart_btn_color, restart_btn)
+            restart_text_surface = base_font.render(restart_text, True, (0, 0, 0))
+            self.screen.blit(restart_text_surface, (restart_btn.x + 60, restart_btn.y + 15))
+
+            # Render the splat text
+            if datetime.now() < end_time:
+                d_font = pg.font.Font(None, 15)
+                splat_surface = d_font.render(splat, True, (255, 255, 255))
+                self.screen.blit(splat_surface, (30, 80))
+            else:
+                set_time = True
+
 
             if self.grid is not None:
                 self.grid.draw(self.screen)
