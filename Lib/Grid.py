@@ -19,33 +19,59 @@ class Grid:
         :return:
         """
         # The first plant will be selected by which plant has the most rows being planted.
-        plant = self.select_plant(0, True)
-        curr_row = self.grid[0]
-        self.plant_row(curr_row, plant)
+        plant = self.select_plant(True)
+        self.plant_row(0, plant)
 
-        start_row = 1
-        while start_row < self.rows:
-            neighbors = self.get_neighbors((start_row, 0))
+        rows_to_plant = sum(self.chosen_plants.values())
+        while rows_to_plant > 0:
+            # Select a plant to be planted.
+            plant, row = self.select_plant()
+            # Plant the plant in the row.
+            self.plant_row(row, plant)
+            # Decrement the number of rows to plant.
+            rows_to_plant -= 1
 
+    def calculate_score(self, plant, neighbors):
+        """
+        Calculates the score of the given plant in the given location.
+        :param plant: The plant to be tested.
+        :param neighbors: The neighbors of the plant.
+        :return: The score of the plant.
+        """
+        score = 0
+        for neighbor in neighbors:
+            if neighbor is not None:
+                score += plant.get_score(neighbor.item)
+        return score
 
-
-    def select_plant(self, row, simple=False):
+    def select_plant(self, simple=False):
         """
         Selects a plant to be placed in the grid.
-        :param row: The row of the grid that the plant will be placed in.
         :param simple: If true, the plant will be a simple plant.
         :return: The plant to be placed in the grid.
         """
         best_plant = ''
         best_score = 0
+        # Grab the plant with the highest value.
+        for plant, num in self.chosen_plants.items():
+            if num > best_score:
+                best_score = num
+                best_plant = plant
+        plant = Plant.Plant(best_plant)
         if simple:
-            # Grab the plant with the highest value.
-            for plant, num in self.chosen_plants.items():
-                if num > best_score:
-                    best_score = num
-                    best_plant = plant
-            if best_plant:
-                return Plant.Plant(best_plant)
+            return plant
+
+        # If this was not a simple planting, then we must do some investigation.
+        best_row = 0
+        best_score = -2
+        for row in range(1, self.rows):
+            if self.grid[row][0].item:
+                continue
+            score = self.calculate_score(plant, self.get_neighbors((row, 0)))
+            if score > best_score:
+                best_score = score
+                best_row = row
+        return plant, best_row
 
     def plant_row(self, row, plant):
         """
@@ -54,8 +80,9 @@ class Grid:
         :param plant: The plant that will be in this row.
         :return: None
         """
-        for space in row:
-            space.item = plant
+        for space in self.grid[row]:
+            space.set_item(plant)
+        self.chosen_plants[plant.name.capitalize()] -= 1
 
     def set_spaces(self):
         """
@@ -73,7 +100,7 @@ class Grid:
         :param location:
         :return:
         """
-        if not self.check_bound(location):
+        if self.check_bound(location):
             return None
         return self.grid[location[0]][location[1]]
 
@@ -84,10 +111,10 @@ class Grid:
         :return: a list of neighbors that are adjacent to the given location.
         """
         neighbors = []
-        bounds = [(1, 0), (-1, 0)]
+        bounds = [1, -1]
         for bound in bounds:
-            neighbor = (location[0] + bound[0], location[1] + bound[1])
-            if not self.check_bound(neighbor):
+            neighbor = (location[0] + bound, location[1])
+            if self.check_bound(neighbor):
                 continue
             neighbors.append(self.get_space(neighbor))
 
@@ -97,9 +124,10 @@ class Grid:
         """
         Checks if the given location is within the bounds of the grid.
         :param location:
-        :return: True if the sl
+        :return: True if the location is outside the bounds of the grid.
         """
-        return location[0] < 0 or location[0] >= self.rows or location[1] < 0 or location[1] >= self.cols
+        return location[0] < 0 or location[0] >= self.rows or location[1] < 0 or location[1] >= \
+               self.cols
 
     def draw(self, screen):
         """

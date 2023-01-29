@@ -61,3 +61,15 @@ class Plant(pg.sprite.Sprite):
         elif self.name == 'tomato':
             # tomato red
             return pg.Color((255, 99, 71))
+
+    def get_score(self, other):
+        """
+        Get the score of the plant with the given plant.
+        :param other: The other plant.
+        :return: The score of the plant.
+        """
+        if other is None:
+            return 0
+        if other.name == self.name:
+            return -0.5
+        return self.relation[other.name]
