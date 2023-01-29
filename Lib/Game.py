@@ -71,9 +71,7 @@ class Game:
 
 
                 if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_RETURN:
-                        self.selected_cell = [None, '']
-                    elif event.key == pg.K_BACKSPACE:
+                    if event.key == pg.K_BACKSPACE:
                         self.selected_cell[1] = self.selected_cell[1][:-1]
                     else:
                         # Only accept numbers that are smaller than 1000000000.
