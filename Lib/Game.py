@@ -184,11 +184,11 @@ class Game:
         textRequestData = json.load(textRequestFile)
 
         if textRequestData["entry"] == "pause":
-            print("User request a pause")
-            self.sendSMS.SendTractorPause("Harvesting", "1,1")
+            self.sendSMS.SendTractorPause("Harvesting", "("+str(self.grid.tractor[1]+1)+", "+str(self.grid.tractor[0]+1)+")")
+            self.grid.tractor_enabled = False
         elif textRequestData["entry"] == "begin":
-            print("User request a begin")
-            self.sendSMS.SendTractorBegin("Harvesting", "1,1")
+            self.sendSMS.SendTractorBegin("Harvesting", "("+str(self.grid.tractor[1]+1)+", "+str(self.grid.tractor[0]+1)+")")
+            self.grid.tractor_enabled = True
 
         resetTextRequestData = {
             "entry": "no response"

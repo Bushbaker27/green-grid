@@ -38,3 +38,7 @@ class Space:
         """
         self.item = item
         self.color = item.color
+
+    def show_tractor(self, screen):
+        space_rect = pg.Rect(495 + self.location[1] * self.scale, 15 + self.location[0] * self.scale, 10, 10)
+        pg.draw.rect(screen, pg.Color('black'), space_rect)

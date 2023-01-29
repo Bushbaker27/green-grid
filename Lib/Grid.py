@@ -1,3 +1,8 @@
+import asyncio
+import time
+
+import pygame
+
 from Lib import Plant
 from Lib import Space
 from Lib import Legend
@@ -14,6 +19,12 @@ class Grid:
         self.grid = []
         self.set_spaces()
         self.make_plants()
+        self.tractor = (0,0)
+        self.tractor_updated = False
+        self.timeSinceLastUpdate = 0
+        self.tractor_left = False
+        self.tractor_right = True
+        self.tractor_enabled = False
 
     def make_plants(self):
         """
@@ -144,5 +155,27 @@ class Grid:
         for row in self.grid:
             for space in row:
                 space.draw(screen)
-
+                if space.location == self.tractor:
+                    space.show_tractor(screen)
+                    self.UpdateTractor()
         self.legend.draw(screen)
+
+
+    def UpdateTractor(self):
+        currentTime = pygame.time.get_ticks()
+        if currentTime - self.timeSinceLastUpdate >= 1000 and self.tractor_enabled:
+            self.timeSinceLastUpdate = currentTime
+            if (self.tractor[1] == self.cols-1 and self.tractor[0] == self.rows-1 and self.tractor_right) or (self.tractor[1] == 0 and self.tractor[0] == self.rows-1 and self.tractor_left):
+                self.tractor_enabled = False
+            elif self.tractor[1] == self.cols-1 and self.tractor_right:
+                self.tractor_right = False
+                self.tractor_left = True
+                self.tractor = (self.tractor[0] + 1, self.tractor[1])
+            elif self.tractor[1] == 0 and self.tractor_left:
+                self.tractor_left = False
+                self.tractor_right = True
+                self.tractor = (self.tractor[0] + 1, self.tractor[1])
+            elif self.tractor_left:
+                self.tractor = (self.tractor[0], self.tractor[1] - 1)
+            elif self.tractor_right:
+                self.tractor = (self.tractor[0], self.tractor[1] + 1)
