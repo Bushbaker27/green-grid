@@ -5,6 +5,7 @@ import re
 import json
 
 from Lib.SendSMS import SendSMS
+from Lib import Grid
 
 
 class Game:
