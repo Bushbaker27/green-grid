@@ -5,6 +5,7 @@ import re
 import json
 
 from Lib.SendSMS import SendSMS
+from Lib import Grid
 
 
 class Game:
@@ -67,7 +68,6 @@ class Game:
         start_button_color = pg.Color('palegreen')
         start_text = 'Start'
 
-
         while True:
             self.CheckForTextMessages()
 
@@ -78,7 +78,7 @@ class Game:
                 if event.type == pg.MOUSEBUTTONDOWN:
                     # If the user clicked on the input_box rect.
                     for pair in self.veggie_trays:
-                        box, text = pair
+                        box, text, _ = pair
                         if box.collidepoint(event.pos):
                             # Toggle the active variable.
                             self.selected_cell = pair
@@ -88,7 +88,7 @@ class Game:
                         self.row_count = int(self.veggie_trays[16][1])
                         self.column_count = int(self.veggie_trays[17][1])
                         plant_filter = [(pair[2], pair[1]) for pair in self.veggie_trays[:16] if
-                                        re.match(r'^[1-9][0-9]+$', pair[1])]
+                                        re.match(r'^[1-9]{0,1}[0-9]+$', pair[1])]
                         plant_selected = dict()
                         for plant, num in plant_filter:
                             plant_selected[plant] = int(num)
