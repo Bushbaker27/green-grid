@@ -6,7 +6,7 @@ from Lib import Grid
 
 class Game:
     def __init__(self):
-        self.dimensions = (1500, 1000)
+        self.dimensions = (500, 500)
         self.grid = None
         self.screen = None
         self.grid = None
@@ -59,10 +59,9 @@ class Game:
         # The sidebar
         sidebar = pg.Rect(0, 0, 250, 1000)
         # The start button.
-        start_button = pg.Rect(30, 900, 200, 50)
+        start_button = pg.Rect(30, 145, 200, 50)
         start_button_color = pg.Color('palegreen')
         start_text = 'Start'
-
 
         while True:
             for event in pg.event.get():
@@ -79,14 +78,23 @@ class Game:
                             self.selected_cell[1] = ''
                     if start_button.collidepoint(event.pos):
                         # Bring up the grid.
+                        if self.veggie_trays[16][1] == "Length" or self.veggie_trays[17][1] == "Width" or self.veggie_trays[16][1] == "" or self.veggie_trays[17][1] == "":
+                            raise ValueError('hi')
                         self.row_count = int(self.veggie_trays[16][1])
                         self.column_count = int(self.veggie_trays[17][1])
                         plant_filter = [(pair[2], pair[1]) for pair in self.veggie_trays[:16] if
                                         re.match(r'^[1-9][0-9]+$', pair[1])]
+                        print(plant_filter)
                         plant_selected = dict()
                         for plant, num in plant_filter:
                             plant_selected[plant] = int(num)
-
+                        count = 0
+                        for value in plant_selected.values():
+                            count += value
+                        if count > self.row_count:
+                            raise ValueError('Too many plants')
+                        print(self.row_count)
+                        print(count)
                         self.grid = Grid.Grid(self.row_count, self.column_count, plant_selected)
 
 
