@@ -1,17 +1,21 @@
 from Lib import Plant
-from Lib import Space
+from Lib import Space, Game
 import pygame as pg
 
 
 class Grid:
 
-    def __init__(self, rows, cols, chosen_plants):
+    def __init__(self, rows, cols, chosen_plants, game):
+        self.game = game
         self.rows = rows
         self.cols = cols
         self.chosen_plants = chosen_plants
         self.grid = []
         self.set_spaces()
         self.make_plants()
+        info = pg.display.Info()
+        self.gridWidth = info.current_w/2
+        self.gridHeight = info.current_h/2
 
     def make_plants(self):
         """
@@ -92,7 +96,7 @@ class Grid:
         for row in range(self.rows):
             self.grid.append([])
             for col in range(self.cols):
-                self.grid[row].append(Space.Space((row, col)))
+                self.grid[row].append(Space.Space((row, col),self.game))
 
     def get_space(self, location):
         """
@@ -136,8 +140,16 @@ class Grid:
         :return: None
         """
         # Make a rectangle as the grid.
-        grid_rect = pg.Rect(490, 10, self.cols * 10 + 10, self.rows * 10 + 10)
-        pg.draw.rect(screen, pg.Color('brown'), grid_rect)
-        for row in self.grid:
-            for space in row:
-                space.draw(screen)
+        try:
+            grid_rect = pg.Rect(self.gridWidth+(((int(self.game.veggie_trays[17][1])/2)*-10)), self.gridHeight+((int(self.game.veggie_trays[16][1])/2)*-10), self.cols * 10 + 10, self.rows * 10 + 10)
+            pg.draw.rect(screen, pg.Color('brown'), grid_rect)
+            for row in self.grid:
+                for space in row:
+                    space.draw(screen)
+        except (ValueError):
+            print('hi')
+            d_font = pg.font.Font(None, 15)
+            blank_splat = d_font.render('Please input an integer for Width/Length', True, (255, 255, 255))
+            self.game.screen.blit(blank_splat, (15, 80))
+            pg.display.flip()
+            pg.time.wait(2000)

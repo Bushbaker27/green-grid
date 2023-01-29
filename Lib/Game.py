@@ -7,10 +7,9 @@ import json
 from Lib.SendSMS import SendSMS
 from Lib import Grid
 
-
 class Game:
     def __init__(self):
-        self.dimensions = (1500, 1000)
+        self.dimensions = (500, 500)
         self.grid = None
         self.screen = None
         self.grid = None
@@ -64,10 +63,9 @@ class Game:
         # The sidebar
         sidebar = pg.Rect(0, 0, 250, 1000)
         # The start button.
-        start_button = pg.Rect(30, 900, 200, 50)
+        start_button = pg.Rect(30, 145, 200, 50)
         start_button_color = pg.Color('palegreen')
         start_text = 'Start'
-
 
         while True:
             self.CheckForTextMessages()
@@ -115,7 +113,7 @@ class Game:
                             else:
                                 print(self.row_count)
                                 print(count)
-                                self.grid = Grid.Grid(self.row_count, self.column_count, plant_selected)
+                                self.grid = Grid.Grid(self.row_count, self.column_count, plant_selected, self)
 
 
                 if event.type == pg.KEYDOWN:
