@@ -4,11 +4,8 @@ import os
 
 
 class Plant(pg.sprite.Sprite):
-    def __init__(self, name, row=-1, col=-1):
+    def __init__(self, name):
         pg.sprite.Sprite.__init__(self)
-
-        self.row = row
-        self.col = col
         self.name = name.lower()
         self.relation = dict()
         self.color = self.decide_color()
