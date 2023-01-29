@@ -1,9 +1,12 @@
 import ssl
+
+import requests
 from pyngrok import ngrok, conf, installer
 import os
 from flask import Flask, request
 import json
-from SendSMS import SendSMS
+from Lib import SendSMS
+from Lib import Game
 
 pyngrok_config = conf.get_default()
 
@@ -23,16 +26,16 @@ app = Flask(__name__)
 def sms_reply():
     from_number = request.form['From']
     body = request.form['Body'].lower()
-    sendSMS = SendSMS()
+    sendSMS = SendSMS.SendSMS()
 
     textRequest = {
         "entry": body
     }
 
-    textRequestFile = json.dumps(textRequest, indent=4)
+    textRequestFileUpdate = json.dumps(textRequest, indent=4)
 
     with open(os.path.dirname(__file__)+"/../ResourcesLib/TextRequest.JSON", "w") as outfile:
-        outfile.write(textRequestFile)
+        outfile.write(textRequestFileUpdate)
 
     if body == "pause" or body == "begin":
         return body
@@ -40,5 +43,9 @@ def sms_reply():
         sendSMS.SendInvalidResponse()
         return "invalid"
 
+def runApp():
+    app.run(debug=True, use_reloader=False, port=5000, host='0.0.0.0')
 
-app.run()
+def runGame():
+    game = Game.Game()
+    game.start_game()

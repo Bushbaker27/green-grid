@@ -1,16 +1,19 @@
+import threading
+
 import pygame as pg
 import os
 import sys
 import re
 import json
 
-from Lib.SendSMS import SendSMS
+from Lib import SendSMS
 from Lib import Grid
 from datetime import datetime, timedelta
 
 
-class Game:
+class Game(threading.Thread):
     def __init__(self):
+        threading.Thread.__init__(self)
         self.dimensions = (1500, 1000)
         self.grid = None
         self.screen = None
@@ -40,7 +43,7 @@ class Game:
             [pg.Rect(10, 10, 100, 32), 'Length', 'Length'],
             [pg.Rect(140, 10, 100, 32), 'Width', 'Width'],
         ]
-        self.sendSMS = SendSMS()
+        self.sendSMS = SendSMS.SendSMS()
 
     def start_game(self):
         """
@@ -63,7 +66,7 @@ class Game:
         black = 0, 0, 0
         self.clock = pg.time.Clock()
         self.screen = pg.display.set_mode(self.dimensions, pg.RESIZABLE)
-        self.background = pg.image.load(os.path.join('./ResourcesLib/images', 'GrassBack.png'))
+        self.background = pg.image.load(os.path.dirname(__file__)+"/../ResourcesLib/images/GrassBack.png")
 
         # The sidebar
         sidebar = pg.Rect(0, 0, 250, 1000)
@@ -180,8 +183,8 @@ class Game:
             pg.display.flip()
 
     def CheckForTextMessages(self):
-        textRequestFile = open(os.path.dirname(__file__) + "/../ResourcesLib/TextRequest.JSON")
-        textRequestData = json.load(textRequestFile)
+        with open("./ResourcesLib/TextRequest.JSON") as textRequestFile:
+            textRequestData = json.load(textRequestFile)
 
         if textRequestData["entry"] == "pause":
             self.sendSMS.SendTractorPause("Harvesting", "("+str(self.grid.tractor[1]+1)+", "+str(self.grid.tractor[0]+1)+")")
