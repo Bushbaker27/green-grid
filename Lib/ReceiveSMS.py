@@ -10,6 +10,7 @@ from Lib import Game
 
 pyngrok_config = conf.get_default()
 
+# Create a local server to host endpoint from
 if not os.path.exists(pyngrok_config.ngrok_path):
     myssl = ssl.create_default_context()
     myssl.check_hostname = False
@@ -21,26 +22,25 @@ print(public_url)
 
 app = Flask(__name__)
 
-
+# Twilio end points that gets pinged when there is a response to the phone number provided
 @app.route("/sms", methods=['POST'])
 def sms_reply():
-    from_number = request.form['From']
     body = request.form['Body'].lower()
-    sendSMS = SendSMS.SendSMS()
+    send_sms = SendSMS.SendSMS()
 
-    textRequest = {
+    text_request = {
         "entry": body
     }
 
-    textRequestFileUpdate = json.dumps(textRequest, indent=4)
+    text_request_file_update = json.dumps(text_request, indent=4)
 
     with open(os.path.dirname(__file__)+"/../ResourcesLib/TextRequest.JSON", "w") as outfile:
-        outfile.write(textRequestFileUpdate)
+        outfile.write(text_request_file_update)
 
     if body == "pause" or body == "begin":
         return body
     else:
-        sendSMS.SendInvalidResponse()
+        send_sms.send_invalid_response()
         return "invalid"
 
 def runApp():

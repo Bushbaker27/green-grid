@@ -17,7 +17,6 @@ class Game(threading.Thread):
         self.dimensions = (1500, 1000)
         self.grid = None
         self.screen = None
-        self.grid = None
         self.background = None
         self.row_count = 0
         self.column_count = 0
@@ -43,7 +42,7 @@ class Game(threading.Thread):
             [pg.Rect(10, 10, 100, 32), 'Length', 'Length'],
             [pg.Rect(140, 10, 100, 32), 'Width', 'Width'],
         ]
-        self.sendSMS = SendSMS.SendSMS()
+        self.send_sms = SendSMS.SendSMS()
 
     def start_game(self):
         """
@@ -80,7 +79,7 @@ class Game(threading.Thread):
         rows_left = 'Rows Left: '
 
         while True:
-            self.CheckForTextMessages()
+            self.check_for_text_messages()
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -182,22 +181,22 @@ class Game(threading.Thread):
 
             pg.display.flip()
 
-    def CheckForTextMessages(self):
-        with open("./ResourcesLib/TextRequest.JSON") as textRequestFile:
-            textRequestData = json.load(textRequestFile)
+    def check_for_text_messages(self):
+        with open("./ResourcesLib/TextRequest.JSON") as text_request_file:
+            text_request_data = json.load(text_request_file)
 
-        if textRequestData["entry"] == "pause":
-            self.sendSMS.SendTractorPause("Harvesting", "("+str(self.grid.tractor[1]+1)+", "+str(self.grid.tractor[0]+1)+")")
+        if text_request_data["entry"] == "pause":
+            self.send_sms.send_tractor_pause("Harvesting", "(" + str(self.grid.tractor[1] + 1) + ", " + str(self.grid.tractor[0] + 1) + ")")
             self.grid.tractor_enabled = False
-        elif textRequestData["entry"] == "begin":
-            self.sendSMS.SendTractorBegin("Harvesting", "("+str(self.grid.tractor[1]+1)+", "+str(self.grid.tractor[0]+1)+")")
+        elif text_request_data["entry"] == "begin":
+            self.send_sms.send_tractor_begin("Harvesting", "(" + str(self.grid.tractor[1] + 1) + ", " + str(self.grid.tractor[0] + 1) + ")")
             self.grid.tractor_enabled = True
 
-        resetTextRequestData = {
+        reset_text_request_data = {
             "entry": "no response"
         }
 
-        replaceTextRequestFile = json.dumps(resetTextRequestData, indent=4)
+        replace_text_request_file = json.dumps(reset_text_request_data, indent=4)
 
         with open(os.path.dirname(__file__) + "/../ResourcesLib/TextRequest.JSON", "w") as outfile:
-            outfile.write(replaceTextRequestFile)
+            outfile.write(replace_text_request_file)

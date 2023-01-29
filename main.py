@@ -9,7 +9,7 @@ def main():
     game.start_game()
 
 if __name__ == '__main__':
-    # Executing the Threads seperatly.
+    # Multi-thread our flask app and our application
     t1 = threading.Thread(target=runApp).start()
     t2 = threading.Thread(target=runGame).start()
 
