@@ -2,7 +2,11 @@ import pygame as pg
 import os
 import sys
 import re
+import json
+
+from Lib.SendSMS import SendSMS
 from Lib import Grid
+
 
 class Game:
     def __init__(self):
@@ -35,6 +39,7 @@ class Game:
             [pg.Rect(15, 40, 100, 32), 'Length', 'Length'],
             [pg.Rect(145, 40, 100, 32), 'Width', 'Width'],
         ]
+        self.sendSMS = SendSMS()
 
     def start_game(self):
         """
@@ -64,6 +69,8 @@ class Game:
         start_text = 'Start'
 
         while True:
+            self.CheckForTextMessages()
+
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
@@ -95,7 +102,7 @@ class Game:
                     else:
                         # Only accept numbers that are smaller than 1000000000.
                         text = event.unicode
-                        if (10 >= len(self.selected_cell[1]) >= 1 and re.match(r'^[0-9]$',text)) or \
+                        if (10 >= len(self.selected_cell[1]) >= 1 and re.match(r'^[0-9]$', text)) or \
                                 re.match(r'^[1-9]$', text):
                             self.selected_cell[1] += event.unicode
 
@@ -103,9 +110,6 @@ class Game:
             self.screen.blit(self.background, (0, 0))
             # Drawing the sidebar
             pg.draw.rect(self.screen, gray, sidebar)
-
-            grid_splat = base_font.render('Grid Dimensions', True, (255, 255, 255))
-            self.screen.blit(grid_splat, (30, 10))
 
             # Render the current text.
             if self.selected_cell[0] is not None and self.selected_cell[0] is not start_button:
@@ -132,3 +136,23 @@ class Game:
                 self.grid.draw(self.screen)
 
             pg.display.flip()
+
+    def CheckForTextMessages(self):
+        textRequestFile = open(os.path.dirname(__file__) + "/../ResourcesLib/TextRequest.JSON")
+        textRequestData = json.load(textRequestFile)
+
+        if textRequestData["entry"] == "pause":
+            print("User request a pause")
+            self.sendSMS.SendTractorPause("Harvesting", "1,1")
+        elif textRequestData["entry"] == "begin":
+            print("User request a begin")
+            self.sendSMS.SendTractorBegin("Harvesting", "1,1")
+
+        resetTextRequestData = {
+            "entry": "no response"
+        }
+
+        replaceTextRequestFile = json.dumps(resetTextRequestData, indent=4)
+
+        with open(os.path.dirname(__file__) + "/../ResourcesLib/TextRequest.JSON", "w") as outfile:
+            outfile.write(replaceTextRequestFile)
