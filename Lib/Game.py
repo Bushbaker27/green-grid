@@ -18,6 +18,7 @@ class Game:
         self.row_count = 0
         self.column_count = 0
         self.clock = None
+        self.splash_dimensions = (700, 500)
         self.selected_cell = [None, '']
         self.veggie_trays = [
             [pg.Rect(45, 100, 160, 32), 'Asparagus', 'Asparagus'],
@@ -57,6 +58,13 @@ class Game:
         color_passive = light_gray
         base_font = pg.font.Font(None, 30)
         black = 0, 0, 0
+
+        self.screen = pg.display.set_mode(self.splash_dimensions)
+        self.background = pg.image.load(os.path.join('./ResourcesLib/images', 'GGLogo.png'))
+        self.screen.blit(self.background, (0, 0))
+        pg.display.flip()
+        pg.time.wait(2000)
+
         self.clock = pg.time.Clock()
         self.screen = pg.display.set_mode(self.dimensions)
         self.background = pg.image.load(os.path.join('./ResourcesLib/images', 'GrassBack.png'))
