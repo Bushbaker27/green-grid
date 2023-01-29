@@ -14,6 +14,8 @@ class Grid:
     def __init__(self, rows, cols, chosen_plants):
         self.rows = rows
         self.cols = cols
+        self.scale_row = 900 / self.cols
+        self.scale_col = 800 / self.rows
         self.chosen_plants = chosen_plants
         self.legend = Legend.Legend(chosen_plants)
         self.grid = []
@@ -106,7 +108,7 @@ class Grid:
         for row in range(self.rows):
             self.grid.append([])
             for col in range(self.cols):
-                self.grid[row].append(Space.Space((row, col)))
+                self.grid[row].append(Space.Space((row, col), self.scale_row, self.scale_col))
 
     def get_space(self, location):
         """
@@ -150,7 +152,7 @@ class Grid:
         :return: None
         """
         # Make a rectangle as the grid.
-        grid_rect = pg.Rect(490, 10, self.cols * 10 + 10, self.rows * 10 + 10)
+        grid_rect = pg.Rect(490, 10, 910, 810)
         pg.draw.rect(screen, pg.Color('brown'), grid_rect)
         for row in self.grid:
             for space in row:

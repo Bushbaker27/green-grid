@@ -8,7 +8,7 @@ class Legend:
 
     def draw(self, screen):
         """
-        Draw the legend on the screen
+        Draw the legend on the screen.
         :param screen: The screen context to draw on.
         :return:
         """

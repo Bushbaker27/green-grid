@@ -5,11 +5,12 @@ class Space:
     A space is a single cell in the grid.
     It can contain a plant or nothing.
     """
-    def __init__(self, location):
+    def __init__(self, location, scale_row=10, scale_col=10):
         self.item = None
         self.color = pg.Color('gray')
         self.location = location
-        self.scale = 10
+        self.scale_row = scale_row
+        self.scale_col = scale_col
 
     def draw(self, screen):
         """
@@ -18,7 +19,8 @@ class Space:
         :return:
         """
         # The rectangle of the space.
-        space_rect = pg.Rect(495 + self.location[1] * self.scale, 15 + self.location[0] * self.scale, 10, 10)
+        space_rect = pg.Rect(495 + self.location[1] * self.scale_row, 15 + self.location[0] *
+                             self.scale_col, self.scale_row, self.scale_col)
         pg.draw.rect(screen, self.color, space_rect)
         pg.draw.rect(screen, pg.Color('black'), space_rect, 1)
 
