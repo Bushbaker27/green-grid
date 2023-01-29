@@ -23,7 +23,6 @@ app = Flask(__name__)
 def sms_reply():
     from_number = request.form['From']
     body = request.form['Body'].lower()
-    print(body)
     sendSMS = SendSMS()
 
     textRequest = {

@@ -144,3 +144,5 @@ class Grid:
         for row in self.grid:
             for space in row:
                 space.draw(screen)
+
+        self.legend.draw(screen)

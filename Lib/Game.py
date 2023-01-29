@@ -87,7 +87,6 @@ class Game:
                     if start_button.collidepoint(event.pos):
                         # Bring up the grid.
                         if self.veggie_trays[16][1] == "Length" or self.veggie_trays[17][1] == "Width" or self.veggie_trays[16][1] == "" or self.veggie_trays[17][1] == "":
-                            print("hi")
                             d_font = pg.font.Font(None, 15)
                             blank_splat = d_font.render('Please input an integer for Width/Length', True, (255,255,255))
                             self.screen.blit(blank_splat,(15,80))
@@ -98,7 +97,6 @@ class Game:
                             self.column_count = int(self.veggie_trays[17][1])
                             plant_filter = [(pair[2], pair[1]) for pair in self.veggie_trays[:16] if
                                             re.match(r'^[1-9]{0,1}[0-9]+$', pair[1])]
-                            print(plant_filter)
                             plant_selected = dict()
                             for plant, num in plant_filter:
                                 plant_selected[plant] = int(num)
@@ -106,15 +104,12 @@ class Game:
                             for value in plant_selected.values():
                                 count += value
                             if count > self.row_count:
-                                print("hi")
                                 f_font = pg.font.Font(None, 15)
                                 b_splat = f_font.render('Too many plants!', True, (255,255,255))
                                 self.screen.blit(b_splat,(15,80))
                                 pg.display.flip()
                                 pg.time.wait(2000)
                             else:
-                                print(self.row_count)
-                                print(count)
                                 self.grid = Grid.Grid(self.row_count, self.column_count, plant_selected)
 
 

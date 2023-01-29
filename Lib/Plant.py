@@ -57,7 +57,8 @@ class Plant(pg.sprite.Sprite):
             # tan
             return pg.Color((232, 193, 162))
         elif self.name == 'potato':
-            return pg.Color('lightbrown')
+            # light brown
+            return pg.Color((181, 101, 29))
         elif self.name == 'tomato':
             # tomato red
             return pg.Color((255, 99, 71))
