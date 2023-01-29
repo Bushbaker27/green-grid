@@ -1,5 +1,22 @@
+import os
 from twilio.rest import Client
 import json
+from flask import Flask, request
+import ssl
+from pyngrok import ngrok, conf, installer
+
+pyngrok_config = conf.get_default()
+
+if not os.path.exists(pyngrok_config.ngrok_path):
+    myssl = ssl.create_default_context();
+    myssl.check_hostname=False
+    myssl.verify_mode=ssl.CERT_NONE
+    installer.install_ngrok(pyngrok_config.ngrok_path, context=myssl)
+
+public_url = ngrok.connect(5000).public_url
+print(public_url)
+
+app = Flask(__name__)
 
 try:
     f = open('../ResourcesLib/TwilioCreds.JSON')
@@ -36,6 +53,25 @@ class SendSMS:
             to=self.recipient_phone_number
         )
 
+    def SendInvalidResponse(self):
+        self.client.messages.create(
+            body="You have responded with an invalid command. Please either say START or STOP",
+            from_=self.twilio_phone_number,
+            to=self.recipient_phone_number
+        )
+
 
 sendSMS = SendSMS()
-sendSMS.SendTractorBegin("jsdf", "sdfjk")
+
+@app.route("/sms", methods=['POST'])
+def sms_reply():
+    from_number = request.form['From']
+    body = request.form['Body'].lower()
+
+    if body == "stop" or body == "start":
+        return body
+    else:
+        sendSMS.SendInvalidResponse()
+        return "invalid"
+
+app.run()
