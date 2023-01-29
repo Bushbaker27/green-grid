@@ -2,21 +2,60 @@ from Lib import Plant
 from Lib import Space
 import pygame as pg
 
+
 class Grid:
 
     def __init__(self, rows, cols, chosen_plants):
         self.rows = rows
         self.cols = cols
         self.chosen_plants = chosen_plants
-        self.plant_list = []
         self.grid = []
         self.set_spaces()
         self.make_plants()
 
     def make_plants(self):
+        """
+        Make plants that are appropriate for this grid.
+        :return:
+        """
+        # The first plant will be selected by which plant has the most rows being planted.
+        plant = self.select_plant(0, True)
+        curr_row = self.grid[0]
+        self.plant_row(curr_row, plant)
+
+        start_row = 1
+        while start_row < self.rows:
+            neighbors = self.get_neighbors((start_row, 0))
 
 
-    def
+
+    def select_plant(self, row, simple=False):
+        """
+        Selects a plant to be placed in the grid.
+        :param row: The row of the grid that the plant will be placed in.
+        :param simple: If true, the plant will be a simple plant.
+        :return: The plant to be placed in the grid.
+        """
+        best_plant = ''
+        best_score = 0
+        if simple:
+            # Grab the plant with the highest value.
+            for plant, num in self.chosen_plants.items():
+                if num > best_score:
+                    best_score = num
+                    best_plant = plant
+            if best_plant:
+                return Plant.Plant(best_plant)
+
+    def plant_row(self, row, plant):
+        """
+        Plants a row of plants.
+        :param row: The row to plant
+        :param plant: The plant that will be in this row.
+        :return: None
+        """
+        for space in row:
+            space.item = plant
 
     def set_spaces(self):
         """
@@ -45,7 +84,7 @@ class Grid:
         :return: a list of neighbors that are adjacent to the given location.
         """
         neighbors = []
-        bounds = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        bounds = [(1, 0), (-1, 0)]
         for bound in bounds:
             neighbor = (location[0] + bound[0], location[1] + bound[1])
             if not self.check_bound(neighbor):
@@ -61,7 +100,6 @@ class Grid:
         :return: True if the sl
         """
         return location[0] < 0 or location[0] >= self.rows or location[1] < 0 or location[1] >= self.cols
-
 
     def draw(self, screen):
         """
