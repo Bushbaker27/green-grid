@@ -25,8 +25,13 @@ class Plant(pg.sprite.Sprite):
                 self.relation[name] = value
 
     def decide_color(self):
+        """
+        Decide the color of the plant.
+        :return: The color of the plant.
+        """
         if self.name == 'asparagus':
-            return pg.Color('lightgreen')
+            # Blue
+            return pg.Color((27, 45, 204))
         elif self.name == 'bean':
             return pg.Color((204, 86, 39))
         elif self.name == 'beet':

@@ -33,6 +33,7 @@ class Game:
             [pg.Rect(45, 550, 160, 32), 'Potato', 'Potato'],
             [pg.Rect(45, 600, 160, 32), 'Pumpkin', 'Pumpkin'],
             [pg.Rect(45, 650, 160, 32), 'Radish', 'Radish'],
+
             [pg.Rect(45, 700, 160, 32), 'Squash', 'Squash'],
             [pg.Rect(45, 750, 160, 32), 'Strawberry', 'Strawberry'],
             [pg.Rect(45, 800, 160, 32), 'Tomato', 'Tomato'],
